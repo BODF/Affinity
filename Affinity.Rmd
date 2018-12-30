@@ -1,0 +1,73 @@
+---
+title: "Affinity Pitch (Thermodynamic Binding)"
+author: "BODF"
+date: "12/29/2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Motivation  
+The concept of molecular binding is key to pharmaceutical science and has led to 
+the development of modern drugs. By using small molecules to target and bind 
+specific bio-molecules we can alter biological activity. To understand binding, 
+students must gain a quantitative sense of binding strength (affinity). 
+
+In the subsequent slides I will outline what binding is, give some examples of 
+binding, and end with a pitch for my shiny app.
+
+## Background  
+Here are a few diagrams and equations we often use to describe 
+binding reactions:
+
+$X + Y \rightleftharpoons XY$, where X and Y are molecules that can bind and form 
+the complex 'XY'. The back and forth arrows indicate that the reaction is 
+reversible.  
+
+$K_a = \frac{[XY]}{[X]*[Y]}$, where $K_a$ is the affinity constant that dictates 
+the ratio between bound and unbound molecular species. The square brackets denote 
+concentration in Molar units of the respective molecular species.
+
+$Fraction_{XY} = \frac{[X]*K_a}{1+[X]*K_a}$ This fraction bound equation allows us to predict 
+the percent of drug-bound molecules if we know $K_a$ and the dose of drug. (Assumes 
+a very low concentration of Y) 
+
+## Examples of Binding  
+In my shiny app, a user is able to interactively control $K_a$ and immediately 
+gain a sense of how it controls binding. Here, I give a still image to 
+for comparison.
+
+```{r plots}
+plot(c(1e-09, 1e-04), c(0,1), type = 'n', log ='x', axes="F", 
+                xlab = "Concentration of X (Molar)", ylab = "Fraction of Y bound",
+                main = "Hypothetical binding curves",
+                cex.main = 1.3, cex.lab = 1.2)
+axis(2, lwd = 3)
+axis(1, lwd = 3, cex.axis = 1.2, labels = 
+     c(expression(10^-9), expression(10^-8), expression(10^-7), 
+       expression(10^-6), expression(10^-5), expression(10^-4)), 
+     at =c(10^-9, 10^-8, 10^-7, 10^-6, 10^-5, 10^-4))
+axis(1, lwd = 1, labels=FALSE, 
+     at = sort(rep(1:9,6))*c(1e-9,1e-8,1e-7,1e-6,1e-5,1e-4))
+box(lwd = 3)
+curve((x*1e+5)/(1 + x*1e+5), from = 1e-09, to = 1e-04, lwd = 2, add = TRUE)
+curve((x*1e+6)/(1 + x*1e+6), from = 1e-09, to = 1e-04, lwd = 2, add = TRUE, col = 'red')
+curve((x*1e+7)/(1 + x*1e+7), from = 1e-09, to = 1e-04, lwd = 2, add = TRUE, col = 'blue')
+legend('topleft', c("Ka = 10^5", "10^6", "10^7"), lwd = 2, col = c('black', 
+        "red", "blue"), box.lwd = 3, cex = 1.2)
+```
+
+## Conclusion
+Interactive learning is a growing field and the shiny app that I am pitching 
+allows users to readily slide a $K_a$ value around and gain an intuitive sense 
+of how $K_a$ affects binding---something that a static plot does in only a 
+passive manner.
+
+The app itself is the simplest representation of binding and many more modes 
+could be added. I left them out for simplicity, they include:  
+
+* An enzyme binding either inhibitor or substrate
+* Multiple binding partners
+* Self versus non-self binding
